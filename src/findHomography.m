@@ -1,7 +1,4 @@
 function tform = findHomography(I1, I2)
-    clear all;
-    I1 = imread('../data/sample1.JPG');
-    I2 = imread('../data/sample2.JPG');
     I1 = rgb2gray(I1);
     I2 = rgb2gray(I2);
 
