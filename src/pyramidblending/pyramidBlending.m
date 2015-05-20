@@ -11,9 +11,11 @@ function pyramidBlending(inFace, switchingFace)
     limgb = genPyr(imgb,'lap',level);
 
     bbox1 = faceDetection(imga);
-    [x1 y1 h1 w1] = bbox1(1,:);
+    face1 = bbox1(1,:); % [x y height width]
+    x1 = face1(1); y1 = face1(2); h1 = face1(3); w1 = face1(4);
     bbox2 = faceDetection(imgb);
-    [x2 y2 h2 w2] = bbox2(1,:);
+    face2 = bbox2(1,:);
+    x2 = face2(1); y2 = face2(2); h2 = face2(3); w2 = face2(4);
     maska = zeros(size(imga));
     maska(y1:y1+h1,x1:x1+w1,:) = 1;
     maskb = 1-maska;
@@ -28,8 +30,10 @@ function pyramidBlending(inFace, switchingFace)
         maskbp = imresize(maskb,[Mp Np]);
         limgo{p} = limga{p}.*maskap + limgb{p}.*maskbp;
     end
+    figure; imshow(inFace); title('inFace');
+    figure; imshow(switchingFace); title('switchingFace');
     imgo = pyrReconstruct(limgo);
-    figure,imshow(imgo) % blend by pyramid
+    figure,imshow(imgo); title('pyramid'); % blend by pyramid
     imgo1 = maska.*imga+maskb.*imgb;
-    figure,imshow(imgo1) % blend by feathering
+    figure,imshow(imgo1); title('feathering'); % blend by feathering
 end
