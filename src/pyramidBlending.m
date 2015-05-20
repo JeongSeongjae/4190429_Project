@@ -1,9 +1,7 @@
 function pyramidBlending(inFace, switchingFace)
     % TODO : this code need fix
-    close all
-    clear
-    imga = im2double(imread('apple1.jpg'));
-    imgb = im2double(imread('orange1.jpg')); % size(imga) = size(imgb)
+    imga = im2double(inFace);
+    imgb = im2double(switchingFace);
     imga = imresize(imga,[size(imgb,1) size(imgb,2)]);
     [M N ~] = size(imga);
 
@@ -12,8 +10,12 @@ function pyramidBlending(inFace, switchingFace)
     limga = genPyr(imga,'lap',level); % the Laplacian pyramid
     limgb = genPyr(imgb,'lap',level);
 
+    bbox1 = faceDetection(imga);
+    [x1 y1 h1 w1] = bbox1(1,:);
+    bbox2 = faceDetection(imgb);
+    [x2 y2 h2 w2] = bbox2(1,:);
     maska = zeros(size(imga));
-    maska(:,1:v,:) = 1;
+    maska(y1:y1+h1,x1:x1+w1,:) = 1;
     maskb = 1-maska;
     blurh = fspecial('gauss',30,15); % feather the border
     maska = imfilter(maska,blurh,'replicate');
