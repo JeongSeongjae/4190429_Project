@@ -1,6 +1,6 @@
-function tform = findHomography(I1, I2)
-    I1 = rgb2gray(I1);
-    I2 = rgb2gray(I2);
+function Ir = getWarpedImage(img1, img2)
+    I1 = rgb2gray(img1);
+    I2 = rgb2gray(img2);
 
     % Find the SURF features.
     points1 = detectSURFFeatures(I1);
@@ -16,18 +16,18 @@ function tform = findHomography(I1, I2)
     matchedPoints2 = vpts2(indexPairs(:, 2));
 
     % Display the matching points.
-    figure; showMatchedFeatures(I1, I2, matchedPoints1, matchedPoints2);
-    legend('matched points 1', 'matched points 2');
-    title('Matched SURF points, including outliers');
+    %figure; showMatchedFeatures(I1, I2, matchedPoints1, matchedPoints2);
+    %legend('matched points 1', 'matched points 2');
+    %title('Matched SURF points, including outliers');
 
     % Exclude the outliers, and compute the transformation matrix.
     [tform, inlierPts1, inlierPts2] = estimateGeometricTransform(matchedPoints1, matchedPoints2, 'similarity');
-    figure; showMatchedFeatures(I1, I2, inlierPts1, inlierPts2);
-    legend('matched points 1', 'matched points 2');
-    title('Matched inlier points');
+    %figure; showMatchedFeatures(I1, I2, inlierPts1, inlierPts2);
+    %legend('matched points 1', 'matched points 2');
+    %title('Matched inlier points');
 
     % Warp image
     outputView = imref2d(size(I1));
-    Ir = imwarp(I2, tform, 'OutputView', outputView);
-    figure; imshow(Ir); title('Warped Image');
+    Ir = imwarp(img2, tform, 'OutputView', outputView);
+    %figure; imshow(Ir); title('Warped Image');
 end
