@@ -1,4 +1,4 @@
-function Ir = getWarpedImage(img1, img2)
+function [Ir, tform] = getWarpedImage(img1, img2)
     I1 = rgb2gray(img1);
     I2 = rgb2gray(img2);
 
